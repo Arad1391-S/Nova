@@ -1,0 +1,845 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NOVA X — فروشگاه تکنولوژی حرفه‌ای">
+<title>NOVA X | فروشگاه تکنولوژی</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f7fa;--card:#fff;--ink:#11151c;--muted:#78818d;--line:#e4e8ed;
+  --dark:#0b1017;--dark2:#131a24;--accent:#f3264b;--accent2:#ff4767;
+  --green:#16a66a;--yellow:#f0a400;--shadow:0 18px 50px rgba(15,24,38,.09);
+  --radius:22px;--max:1360px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Arial,sans-serif}
+body.dark{--bg:#080c12;--card:#111721;--ink:#f4f6f8;--muted:#9aa4b0;--line:#26303c;--shadow:0 18px 50px rgba(0,0,0,.28)}
+button,input,select,textarea{font:inherit}
+button{border:0;cursor:pointer}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+.container{width:min(var(--max),94%);margin:auto}
+.hidden{display:none!important}
+.no-scroll{overflow:hidden}
+
+.top{background:var(--dark);color:#fff;padding:9px 0;font-size:11px}
+.top .container{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.top b{color:#ff5a78}
+
+header{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{min-height:74px;display:flex;align-items:center;gap:18px}
+.logo{font-weight:900;font-size:34px;letter-spacing:-2px}
+.logo i{color:var(--accent);font-style:normal}
+.search{flex:1;position:relative}
+.search input{width:100%;height:46px;border:1px solid transparent;border-radius:15px;background:color-mix(in srgb,var(--line) 35%,var(--card));padding:0 48px 0 18px;outline:0;color:var(--ink)}
+.search input:focus{border-color:#cfd5dc}
+.searchIcon{position:absolute;right:16px;top:8px;font-size:22px;color:var(--muted)}
+.searchSuggestions{position:absolute;right:0;left:0;top:54px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:none;z-index:80}
+.searchSuggestions.show{display:block}
+.suggestion{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--line);cursor:pointer}
+.suggestion:hover{background:color-mix(in srgb,var(--line) 30%,var(--card))}
+.suggestion img{width:45px;height:45px;object-fit:contain;border-radius:10px;background:#f4f6f8}
+.suggestion small{color:var(--muted);display:block}
+
+.actions{display:flex;gap:8px}
+.iconBtn{width:43px;height:43px;border-radius:13px;background:color-mix(in srgb,var(--line) 35%,var(--card));color:var(--ink);position:relative}
+.badge{position:absolute;right:-4px;top:-5px;background:var(--accent);color:#fff;border-radius:50%;font-size:9px;width:18px;height:18px;display:grid;place-items:center}
+.loginBtn,.outlineBtn{padding:10px 15px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);font-weight:800}
+.themeBtn{font-size:17px}
+
+.cats{border-top:1px solid var(--line)}
+.catbar{display:flex;align-items:center;gap:26px;height:48px;font-size:12px;color:var(--muted);overflow:auto;white-space:nowrap}
+.catbar a:hover,.catbar a.active{color:var(--accent);font-weight:900}
+
+.hero{padding:22px 0 15px}
+.heroBox{min-height:480px;border-radius:30px;background:linear-gradient(120deg,#080c12,#151d28 62%,#090d13);overflow:hidden;color:#fff;display:grid;grid-template-columns:1.02fr 1fr;align-items:center;position:relative}
+.heroBox:after{content:"";position:absolute;width:500px;height:500px;border-radius:50%;background:rgba(243,38,75,.12);left:-100px;top:-180px;filter:blur(10px)}
+.heroText{padding:50px;position:relative;z-index:2}
+.heroK{display:inline-flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:7px 12px;border-radius:99px;font-size:10px}
+.hero h1{font-size:clamp(42px,5vw,72px);line-height:1.02;margin:16px 0;letter-spacing:-3px}
+.hero h1 span{color:#ff3659}
+.hero p{color:#b8c0ca;font-size:13px;line-height:2;max-width:540px}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#fff;border-radius:14px;padding:13px 20px;font-weight:900;box-shadow:0 15px 30px rgba(243,38,75,.22)}
+.cta:hover{background:var(--accent2);transform:translateY(-1px)}
+.heroImage{width:100%;height:100%;max-height:450px;object-fit:contain;padding:25px;filter:drop-shadow(0 35px 40px rgba(0,0,0,.55));position:relative;z-index:2}
+.heroStats{display:flex;gap:28px;margin-top:25px;font-size:10px;color:#dfe4ea}
+.heroStats b{display:block;font-size:15px;color:#fff}
+
+.trust{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 10px 30px rgba(0,0,0,.03);margin:10px 0 28px}
+.trustItem{display:flex;align-items:center;gap:12px;justify-content:center;border-left:1px solid var(--line)}
+.trustItem:last-child{border:0}
+.trustIcon{width:43px;height:43px;border-radius:13px;background:color-mix(in srgb,var(--line) 35%,var(--card));display:grid;place-items:center;font-size:19px}
+.trust b{font-size:11px}.trust small{display:block;color:var(--muted);font-size:9px}
+
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:25px 0 15px;flex-wrap:wrap}
+.toolbar h2{margin:0;font-size:24px}
+.toolbar p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.toolbarRight{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select{height:40px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0 12px;outline:0}
+.filterBtn{height:40px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0 14px;font-weight:800}
+
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 8px 25px rgba(15,24,38,.04);transition:.25s;position:relative;min-width:0}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.pimg{height:285px;background:#f4f6f8;display:grid;place-items:center;position:relative;padding:16px;overflow:hidden}
+.dark .pimg{background:#e9edf1}
+.pimg img{width:100%;height:100%;object-fit:contain;transition:.3s}
+.card:hover .pimg img{transform:scale(1.045)}
+.tag{position:absolute;right:12px;top:12px;background:var(--accent);color:#fff;border-radius:8px;padding:5px 8px;font-size:9px;font-weight:900;z-index:2}
+.stockTag{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.72);color:#fff;border-radius:8px;padding:5px 8px;font-size:8px;z-index:2}
+.heart{position:absolute;left:12px;top:12px;width:35px;height:35px;border-radius:10px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);font-size:18px;z-index:3;color:#333}
+.heart.on{color:var(--accent)}
+.info{padding:15px;min-height:250px;display:flex;flex-direction:column}
+.brand{color:#8b929c;font-size:9px;font-weight:800}
+.name{font-size:13px;font-weight:900;margin:5px 0 7px;min-height:40px}
+.rating{font-size:10px;color:#f2a900}
+.rating span{color:#9299a3;margin-right:5px}
+.specs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0}
+.spec{background:color-mix(in srgb,var(--line) 35%,var(--card));border-radius:8px;padding:6px;font-size:8px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.priceRow{display:flex;align-items:end;justify-content:space-between;gap:8px;margin-top:auto}
+.price{font-weight:900;font-size:15px}
+.old{font-size:9px;color:#9ba2aa;text-decoration:line-through;margin-top:2px}
+.add{background:#101722;color:#fff;border-radius:11px;padding:10px 13px;font-size:10px;font-weight:900}
+.add:hover{background:var(--accent)}
+.quickBtn{background:color-mix(in srgb,var(--line) 40%,var(--card));color:var(--ink);border-radius:11px;padding:9px 11px;font-size:9px;font-weight:800;margin-top:7px;width:100%}
+
+.banner{background:#10161f;color:#fff;border-radius:27px;padding:30px 35px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin:38px 0;overflow:hidden;position:relative}
+.banner:before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;left:15%;top:-190px;background:rgba(243,38,75,.2);filter:blur(20px)}
+.banner>*{position:relative}
+.banner h2{margin:0;font-size:27px}.banner p{color:#aeb7c2;font-size:11px}
+.countdown{display:flex;gap:7px;margin-top:12px}
+.timeBox{min-width:47px;padding:7px;border-radius:9px;background:rgba(255,255,255,.08);text-align:center}
+.timeBox b{display:block;font-size:15px}.timeBox small{font-size:7px;color:#aeb7c2}
+
+.brands{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.brandBox{background:var(--card);border:1px solid var(--line);height:74px;border-radius:17px;display:grid;place-items:center;color:var(--muted);font-weight:900;letter-spacing:1px;transition:.2s}
+.brandBox:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+
+.compareBar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:35;background:var(--dark);color:#fff;border-radius:18px;padding:10px 14px;display:none;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.compareBar.show{display:flex}
+.compareBar button{background:var(--accent);color:#fff;border-radius:10px;padding:8px 12px;font-size:10px;font-weight:800}
+
+.recent{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.recentItem{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.recentItem img{width:58px;height:58px;object-fit:contain;background:#f4f6f8;border-radius:10px}
+.recentItem b{font-size:9px}.recentItem small{display:block;color:var(--muted);font-size:8px;margin-top:4px}
+
+footer{margin-top:55px;background:var(--dark);color:#fff;padding:42px 0 22px}
+.footerGrid{display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:30px}
+footer h3{font-size:13px;margin:0 0 10px}footer p,footer a{font-size:10px;color:#929aa6;line-height:2.4;display:block}
+.copy{border-top:1px solid #252d37;margin-top:25px;padding-top:15px;text-align:center;color:#737d89;font-size:9px}
+
+.modalBg{position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100;padding:18px}
+.modalBg.show{display:flex}
+.modal{background:var(--card);color:var(--ink);border-radius:25px;width:min(1000px,100%);max-height:92vh;overflow:auto;border:1px solid var(--line)}
+.modalHead{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-weight:900}
+.close{width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--line) 40%,var(--card));color:var(--ink)}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:25px;padding:25px}
+.galleryMain{height:390px;background:#f4f6f8;border-radius:18px;display:grid;place-items:center;overflow:hidden}
+.galleryMain img{width:95%;height:95%;object-fit:contain;transition:.2s}
+.thumbs{display:flex;gap:8px;margin-top:10px;overflow:auto}
+.thumb{width:65px;height:65px;border-radius:11px;border:2px solid transparent;background:#f4f6f8;cursor:pointer;flex:0 0 auto}
+.thumb.active{border-color:var(--accent)}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.quick h2{font-size:25px;margin:5px 0 10px}.quick p{color:var(--muted);font-size:11px;line-height:2}
+.colorDots{display:flex;gap:9px;margin:14px 0}.colorDot{width:28px;height:28px;border-radius:50%;border:3px solid var(--card);outline:1px solid var(--line)}
+.quickActions{display:flex;gap:8px;margin-top:18px}.quickActions>*{flex:1}
+.cartList{padding:18px 20px}
+.cartItem{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}
+.cartItem img{width:65px;height:65px;object-fit:contain;background:#f4f6f8;border-radius:12px}
+.grow{flex:1}.qty{display:flex;align-items:center;gap:7px}.qty button{width:29px;height:29px;border-radius:8px;background:color-mix(in srgb,var(--line) 40%,var(--card));color:var(--ink)}
+.cartTotal{padding:18px 20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.cartTotal .cta{white-space:nowrap}
+
+.filterPanel{padding:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.filterPanel label{font-size:11px;font-weight:800;display:block;margin-bottom:7px}
+.range{width:100%}
+.filterActions{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end}
+
+.compareTable{width:100%;border-collapse:collapse;font-size:10px}
+.compareTable th,.compareTable td{border-bottom:1px solid var(--line);padding:12px;text-align:center}
+.compareTable th{background:color-mix(in srgb,var(--line) 30%,var(--card))}
+.compareTable img{width:100px;height:90px;object-fit:contain}
+
+.profile{padding:22px;display:grid;grid-template-columns:180px 1fr;gap:20px}
+.profileSide{border-left:1px solid var(--line);padding-left:20px}
+.profileSide button{display:block;width:100%;padding:10px;text-align:right;background:transparent;color:var(--ink);border-radius:10px;margin-bottom:4px}
+.profileSide button:hover{background:color-mix(in srgb,var(--line) 30%,var(--card))}
+.profileMain h2{margin-top:0}
+.statGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:color-mix(in srgb,var(--line) 30%,var(--card));padding:15px;border-radius:14px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+
+.toast{position:fixed;bottom:25px;right:25px;z-index:150;background:var(--dark);color:#fff;padding:12px 16px;border-radius:13px;box-shadow:var(--shadow);font-size:11px;transform:translateY(20px);opacity:0;pointer-events:none;transition:.25s}
+.toast.show{transform:none;opacity:1}
+.empty{grid-column:1/-1;background:var(--card);border:1px dashed var(--line);padding:45px;text-align:center;border-radius:18px;color:var(--muted)}
+
+.mobileNav{display:none}
+
+@media(max-width:1100px){
+ .products{grid-template-columns:repeat(3,minmax(0,1fr))}.brands{grid-template-columns:repeat(3,1fr)}
+ .heroBox{grid-template-columns:1fr;min-height:650px}.heroImage{height:330px;order:-1}.footerGrid{grid-template-columns:1fr 1fr}
+ .recent{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:750px){
+ .top .container{justify-content:center}.nav{flex-wrap:wrap;padding:9px 0}.logo{font-size:28px}.search{order:5;flex-basis:100%}.loginBtn{display:none}
+ .trust{grid-template-columns:1fr 1fr}.trustItem{border:0;padding:8px}
+ .products{grid-template-columns:1fr 1fr;gap:10px}.pimg{height:205px}.info{padding:11px;min-height:220px}.name{font-size:11px}.specs{display:none}.price{font-size:12px}.add{padding:8px;font-size:8px}
+ .banner{display:block}.recent{grid-template-columns:1fr 1fr}.quick{grid-template-columns:1fr}.galleryMain{height:280px}
+ .filterPanel{grid-template-columns:1fr}.profile{grid-template-columns:1fr}.profileSide{border:0;border-bottom:1px solid var(--line);padding:0 0 10px}
+ .mobileNav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--line);height:62px;display:flex;z-index:60;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom)}
+ .mobileNav button{background:transparent;color:var(--muted);font-size:18px}.mobileNav span{display:block;font-size:7px}
+ body{padding-bottom:65px}
+}
+@media(max-width:450px){
+ .products{grid-template-columns:1fr 1fr;gap:7px}.pimg{height:165px}.info{min-height:205px}.card .name{font-size:10px}.brand{font-size:8px}
+ .heroText{padding:25px}.hero h1{font-size:43px}.heroStats{gap:12px}.trust{grid-template-columns:1fr}.brands{grid-template-columns:repeat(2,1fr)}
+ .recent{grid-template-columns:1fr}.toolbar h2{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="top">
+  <div class="container">
+    <span>🚚 ارسال سریع به سراسر کشور</span>
+    <span>🛡️ ضمانت اصالت کالا</span>
+    <span>↩️ ۷ روز ضمانت بازگشت</span>
+    <span>🎧 پشتیبانی ۲۴ ساعته</span>
+  </div>
+</div>
+
+<header>
+  <div class="container nav">
+    <a class="logo" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">NOV<i>A</i></a>
+
+    <div class="search">
+      <span class="searchIcon">⌕</span>
+      <input id="search" autocomplete="off" placeholder="جستجو در محصولات، برندها و دسته‌بندی‌ها...">
+      <div id="searchSuggestions" class="searchSuggestions"></div>
+    </div>
+
+    <div class="actions">
+      <button class="iconBtn themeBtn" id="themeBtn" title="حالت تاریک">☾</button>
+      <button class="iconBtn" id="wishBtn" title="علاقه‌مندی‌ها">♡<i class="badge" id="wishCount">0</i></button>
+      <button class="iconBtn" id="cartBtn" title="سبد خرید">🛒<i class="badge" id="cartCount">0</i></button>
+      <button class="loginBtn" id="loginBtn">ورود / ثبت‌نام</button>
+    </div>
+  </div>
+
+  <div class="cats">
+    <div class="container catbar">
+      <a class="active" href="#" data-cat="همه">خانه</a>
+      <a href="#products" data-cat="لپ‌تاپ">لپ‌تاپ</a>
+      <a href="#products" data-cat="موبایل">موبایل</a>
+      <a href="#products" data-cat="تبلت">تبلت</a>
+      <a href="#products" data-cat="قطعات">کامپیوتر و قطعات</a>
+      <a href="#products" data-cat="لوازم جانبی">لوازم جانبی</a>
+      <a href="#products" data-cat="گیمینگ">گیمینگ</a>
+      <a href="#brands">برندها</a>
+      <a href="#deals">پیشنهاد شگفت‌انگیز</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container">
+    <div class="heroBox">
+      <div class="heroText">
+        <span class="heroK">⚡ انتخاب حرفه‌ای برای حرفه‌ای‌ها</span>
+        <h1>Lenovo <span>LOQ</span></h1>
+        <p>لپ‌تاپ گیمینگ و حرفه‌ای برای کسانی که سرعت، قدرت و طراحی مدرن را یکجا می‌خواهند.</p>
+        <a class="cta" href="#products">مشاهده و خرید ←</a>
+        <div class="heroStats">
+          <div><b>RTX 4060</b>کارت گرافیک</div>
+          <div><b>16GB</b>رم</div>
+          <div><b>1TB SSD</b>حافظه</div>
+          <div><b>144Hz</b>نمایشگر</div>
+        </div>
+      </div>
+      <img class="heroImage" id="heroImage"  alt="Lenovo LOQ">
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <section class="trust">
+    <div class="trustItem"><div class="trustIcon">🚚</div><div><b>ارسال سریع</b><small>تحویل سریع سفارش</small></div></div>
+    <div class="trustItem"><div class="trustIcon">🛡️</div><div><b>ضمانت اصالت</b><small>خرید مطمئن</small></div></div>
+    <div class="trustItem"><div class="trustIcon">↩️</div><div><b>۷ روز بازگشت</b><small>بدون دردسر</small></div></div>
+    <div class="trustItem"><div class="trustIcon">🎧</div><div><b>پشتیبانی</b><small>همیشه کنار شما</small></div></div>
+  </section>
+
+  <section id="deals" class="banner">
+    <div>
+      <h2>🔥 پیشنهاد شگفت‌انگیز</h2>
+      <p>تخفیف‌های ویژه قبل از اینکه تمام شوند.</p>
+      <div class="countdown" id="countdown"></div>
+    </div>
+    <a class="cta" href="#products" onclick="setDealFilter();">مشاهده تخفیف‌ها</a>
+  </section>
+
+  <section id="products" class="section">
+    <div class="toolbar">
+      <div>
+        <h2 id="productTitle">محصولات منتخب</h2>
+        <p id="productSubtitle">جدیدترین محصولات تکنولوژی NOVA</p>
+      </div>
+      <div class="toolbarRight">
+        <button class="filterBtn" id="filterBtn">⚙ فیلتر</button>
+        <select id="sort">
+          <option value="default">مرتب‌سازی پیش‌فرض</option>
+          <option value="new">جدیدترین</option>
+          <option value="best">پرفروش‌ترین</option>
+          <option value="cheap">ارزان‌ترین</option>
+          <option value="expensive">گران‌ترین</option>
+          <option value="discount">بیشترین تخفیف</option>
+          <option value="rating">بالاترین امتیاز</option>
+        </select>
+      </div>
+    </div>
+    <div id="activeFilters" style="display:none;margin-bottom:12px"></div>
+    <div class="products" id="productGrid"></div>
+  </section>
+
+  <section class="section">
+    <div class="toolbar"><div><h2>👁️ اخیراً دیده‌شده</h2><p>محصولاتی که آخرین بار مشاهده کردی</p></div></div>
+    <div class="recent" id="recentGrid"></div>
+  </section>
+
+  <section id="brands" class="section">
+    <div class="toolbar"><div><h2>برندهای محبوب</h2><p>انتخاب از میان برندهای معتبر</p></div></div>
+    <div class="brands">
+      <button class="brandBox" data-brand="Apple">APPLE</button>
+      <button class="brandBox" data-brand="Samsung">SAMSUNG</button>
+      <button class="brandBox" data-brand="Lenovo">LENOVO</button>
+      <button class="brandBox" data-brand="ASUS">ASUS</button>
+      <button class="brandBox" data-brand="Sony">SONY</button>
+      <button class="brandBox" data-brand="Logitech">LOGITECH</button>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="container footerGrid">
+    <div><h3>NOVA X</h3><p>فروشگاه تکنولوژی با تجربه‌ای سریع، مدرن و حرفه‌ای.</p></div>
+    <div><h3>خدمات</h3><a href="#">پیگیری سفارش</a><a href="#">ضمانت بازگشت</a><a href="#">پشتیبانی</a></div>
+    <div><h3>دسته‌بندی</h3><a href="#products">لپ‌تاپ</a><a href="#products">موبایل</a><a href="#products">گیمینگ</a></div>
+    <div><h3>ارتباط</h3><p>شنبه تا پنجشنبه — ۹ تا ۲۱</p><p>support@nova.example</p></div>
+  </div>
+  <div class="container copy">© 2026 NOVA X — تمام حقوق محفوظ است.</div>
+</footer>
+
+<div class="compareBar" id="compareBar">
+  <span id="compareCount">۰ محصول برای مقایسه</span>
+  <button id="compareBtn">مقایسه</button>
+  <button id="clearCompare" style="background:#303946">پاک کردن</button>
+</div>
+
+<div class="modalBg" id="quickModal">
+  <div class="modal">
+    <div class="modalHead"><span>جزئیات محصول</span><button class="close" onclick="closeModal('quickModal')">×</button></div>
+    <div class="quick">
+      <div>
+        <div class="galleryMain"><img id="qMainImg" alt=""></div>
+        <div class="thumbs" id="qThumbs"></div>
+      </div>
+      <div>
+        <div class="brand" id="qBrand"></div>
+        <h2 id="qName"></h2>
+        <div class="rating">★★★★★ <span id="qRating"></span></div>
+        <p id="qDesc"></p>
+        <div class="specs" id="qSpecs"></div>
+        <div><b>رنگ:</b><div class="colorDots" id="qColors"></div></div>
+        <div class="price" id="qPrice"></div>
+        <div class="quickActions">
+          <button class="cta" id="qAdd">افزودن به سبد</button>
+          <button class="outlineBtn" id="qCompare">مقایسه</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modalBg" id="cartModal">
+  <div class="modal">
+    <div class="modalHead"><span>🛒 سبد خرید</span><button class="close" onclick="closeModal('cartModal')">×</button></div>
+    <div class="cartList" id="cartList"></div>
+    <div class="cartTotal" id="cartTotal"></div>
+  </div>
+</div>
+
+<div class="modalBg" id="filterModal">
+  <div class="modal">
+    <div class="modalHead"><span>فیلتر محصولات</span><button class="close" onclick="closeModal('filterModal')">×</button></div>
+    <div class="filterPanel">
+      <div><label>دسته‌بندی</label><select id="filterCat" style="width:100%"><option value="همه">همه</option><option>لپ‌تاپ</option><option>موبایل</option><option>تبلت</option><option>قطعات</option><option>لوازم جانبی</option><option>گیمینگ</option></select></div>
+      <div><label>برند</label><select id="filterBrand" style="width:100%"><option value="همه">همه برندها</option><option>Apple</option><option>Samsung</option><option>Lenovo</option><option>ASUS</option><option>Sony</option><option>Logitech</option></select></div>
+      <div><label>حداقل قیمت: <span id="minPriceText"></span></label><input id="minPrice" class="range" type="range" min="0" max="150000000" step="1000000" value="0"></div>
+      <div><label>حداکثر قیمت: <span id="maxPriceText"></span></label><input id="maxPrice" class="range" type="range" min="10000000" max="150000000" step="1000000" value="150000000"></div>
+      <div><label>حداقل امتیاز</label><select id="filterRating" style="width:100%"><option value="0">همه</option><option value="4">۴ به بالا</option><option value="4.5">۴.۵ به بالا</option><option value="4.8">۴.۸ به بالا</option></select></div>
+      <div><label>فقط تخفیف‌دار</label><select id="filterDeal" style="width:100%"><option value="all">همه</option><option value="yes">بله</option></select></div>
+      <div class="filterActions"><button class="outlineBtn" onclick="resetFilters()">حذف فیلترها</button><button class="cta" onclick="applyFilters()">اعمال فیلتر</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modalBg" id="compareModal">
+  <div class="modal">
+    <div class="modalHead"><span>⚖️ مقایسه محصولات</span><button class="close" onclick="closeModal('compareModal')">×</button></div>
+    <div style="padding:15px;overflow:auto" id="compareContent"></div>
+  </div>
+</div>
+
+<div class="modalBg" id="wishModal">
+  <div class="modal">
+    <div class="modalHead"><span>❤️ علاقه‌مندی‌های من</span><button class="close" onclick="closeModal('wishModal')">×</button></div>
+    <div style="padding:20px"><div class="products" id="wishGrid"></div></div>
+  </div>
+</div>
+
+<div class="modalBg" id="profileModal">
+  <div class="modal">
+    <div class="modalHead"><span>👤 حساب کاربری</span><button class="close" onclick="closeModal('profileModal')">×</button></div>
+    <div class="profile">
+      <div class="profileSide">
+        <button>📦 سفارش‌های من</button><button>❤️ علاقه‌مندی‌ها</button><button>📍 آدرس‌ها</button><button>⚙ تنظیمات</button>
+      </div>
+      <div class="profileMain">
+        <h2>سلام 👋</h2><p style="color:var(--muted);font-size:11px">این نسخه Front-End است؛ اطلاعات آزمایشی در مرورگر ذخیره می‌شوند.</p>
+        <div class="statGrid"><div class="stat"><b id="profileOrders">0</b><small>سفارش</small></div><div class="stat"><b id="profileWish">0</b><small>علاقه‌مندی</small></div><div class="stat"><b id="profileCart">0</b><small>کالا در سبد</small></div></div>
+        <div style="margin-top:20px"><button class="cta" onclick="closeModal('profileModal');showToast('در نسخه Python + MySQL، حساب واقعی فعال می‌شود.')">نسخه کامل حساب کاربری</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="mobileNav">
+  <button onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂<span>خانه</span></button>
+  <button onclick="document.getElementById('search').focus()">⌕<span>جستجو</span></button>
+  <button onclick="openModal('wishModal');renderWishlist()">♡<span>علاقه‌مندی</span></button>
+  <button onclick="openModal('cartModal');renderCart()">🛒<span>سبد</span></button>
+  <button onclick="openModal('profileModal')">♙<span>حساب</span></button>
+</nav>
+
+<script>
+/*
+=========================================================
+NOVA X — PRODUCT DATA
+=========================================================
+⭐ برای اضافه کردن محصول:
+1) عکس را داخل پوشه images بگذار.
+2) مقدار images را مثل نمونه زیر بنویس.
+3) یک محصول جدید به آرایه products اضافه کن.
+
+مثال:
+images:["images/my-phone.jpg","images/my-phone-2.jpg"]
+=========================================================
+*/
+
+const PLACEHOLDER = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700">
+<rect width="100%" height="100%" fill="#eef1f4"/>
+<rect x="220" y="150" width="460" height="300" rx="35" fill="#d9dee5"/>
+<circle cx="450" cy="300" r="70" fill="#c5cbd3"/>
+<text x="450" y="535" text-anchor="middle" font-family="Arial" font-size="28" fill="#77808c">NOVA PRODUCT</text>
+</svg>`);
+
+function image(path){
+  return path && !path.includes("your-image") ? path : PLACEHOLDER;
+}
+
+const products = [
+  {
+    id:1, brand:"Lenovo", name:"Lenovo LOQ 15", cat:"لپ‌تاپ",
+    price:64900000, old:72900000, discount:11, rating:4.9, sales:980, stock:12, new:true,
+  images: ["images/loq.vebp"],
+    colors:["#17191d","#5f6570"], badge:"پرفروش",
+    desc:"لپ‌تاپ گیمینگ قدرتمند با نمایشگر سریع و سخت‌افزار مناسب بازی و کار حرفه‌ای.",
+    specs:["RTX 4060","16GB RAM","1TB SSD","15.6 FHD"]
+  },
+  {
+    id:2, brand:"Apple", name:"iPhone 16 Pro", cat:"موبایل",
+    price:88900000, old:94900000, discount:6, rating:4.9, sales:1240, stock:7, new:true,
+    images:["images/loq.vebp","images/iphone16-2.jpg","images/iphone16-3.jpg"],
+    colors:["#24252a","#c8c6bd","#d9d8d0"],
+    desc:"پرچمدار اپل با طراحی تیتانیومی، دوربین حرفه‌ای و عملکرد سریع.",
+    specs:["A18 Pro","256GB","48MP","OLED"]
+  },
+  {
+    id:3, brand:"Samsung", name:"Galaxy S25 Ultra", cat:"موبایل",
+    price:79900000, old:84900000, discount:6, rating:4.8, sales:1130, stock:15,
+    images:["images/s25.jpg","images/s25-2.jpg","images/s25-3.jpg"],
+    colors:["#1e2025","#b7b0a6","#6c6f75"],
+    desc:"گوشی پرچمدار سامسونگ با نمایشگر بزرگ، قلم و دوربین چندگانه.",
+    specs:["12GB RAM","256GB","200MP","AMOLED"]
+  },
+  {
+    id:4, brand:"ASUS", name:"ROG Zephyrus G16", cat:"گیمینگ",
+    price:119000000, old:132000000, discount:10, rating:4.9, sales:760, stock:5,
+    images:["images/rog-g16.jpg","images/rog-g16-2.jpg"],
+    colors:["#22252b"],
+    desc:"لپ‌تاپ گیمینگ رده‌بالا با طراحی باریک و سخت‌افزار قدرتمند.",
+    specs:["RTX 4070","32GB RAM","1TB SSD","OLED 240Hz"]
+  },
+  {
+    id:5, brand:"Sony", name:"PlayStation 5 Slim", cat:"گیمینگ",
+    price:37900000, old:41900000, discount:10, rating:4.8, sales:1680, stock:20,
+    images:["images/ps5.jpg","images/ps5-2.jpg"],
+    colors:["#ffffff"],
+    desc:"کنسول نسل نهم سونی با سرعت بالا و تجربه بازی نسل جدید.",
+    specs:["1TB SSD","4K","120Hz","Ray Tracing"]
+  },
+  {
+    id:6, brand:"Apple", name:"iPad Air M3", cat:"تبلت",
+    price:52900000, old:56900000, discount:7, rating:4.7, sales:640, stock:9,
+    images:["images/ipad-air.jpg","images/ipad-air-2.jpg"],
+    colors:["#c9c9c9","#5c6875"],
+    desc:"تبلت سبک و قدرتمند برای طراحی، مطالعه، تولید محتوا و کار روزمره.",
+    specs:["M3","8GB RAM","256GB","11-inch"]
+  },
+  {
+    id:7, brand:"Logitech", name:"Logitech G Pro X Superlight", cat:"لوازم جانبی",
+    price:8900000, old:10400000, discount:14, rating:4.9, sales:2100, stock:30,
+    images:["images/gpro.jpg","images/gpro-2.jpg"],
+    colors:["#17191d","#eeeeee"],
+    desc:"ماوس گیمینگ سبک و سریع برای رقابت حرفه‌ای.",
+    specs:["Wireless","63g","25K DPI","USB-C"]
+  },
+  {
+    id:8, brand:"Lenovo", name:"Legion 5", cat:"لپ‌تاپ",
+    price:73900000, old:79900000, discount:8, rating:4.7, sales:550, stock:11,
+    images:["images/legion5.jpg"],
+    colors:["#20242b"],
+    desc:"لپ‌تاپ گیمینگ متعادل برای بازی، برنامه‌نویسی و کار حرفه‌ای.",
+    specs:["RTX 4060","16GB RAM","512GB SSD","165Hz"]
+  },
+  {
+    id:9, brand:"Samsung", name:"Galaxy Tab S10", cat:"تبلت",
+    price:44900000, old:47900000, discount:6, rating:4.6, sales:430, stock:18,
+    images:["images/tab-s10.jpg"],
+    colors:["#22252b","#d7d7d3"],
+    desc:"تبلت اندرویدی سریع با نمایشگر باکیفیت برای سرگرمی و کار.",
+    specs:["12GB RAM","256GB","12.4-inch","AMOLED"]
+  },
+  {
+    id:10, brand:"ASUS", name:"RTX 4070 SUPER", cat:"قطعات",
+    price:57900000, old:62900000, discount:8, rating:4.9, sales:390, stock:6,
+    images:["images/rtx4070.jpg"],
+    colors:["#20242a"],
+    desc:"کارت گرافیک قدرتمند برای بازی‌های سنگین و تولید محتوای حرفه‌ای.",
+    specs:["12GB VRAM","GDDR6X","DLSS 3","Ray Tracing"]
+  }
+];
+
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+let cart = JSON.parse(localStorage.getItem("nova_cart") || "[]");
+let wish = JSON.parse(localStorage.getItem("nova_wish") || "[]");
+let recent = JSON.parse(localStorage.getItem("nova_recent") || "[]");
+let compare = JSON.parse(localStorage.getItem("nova_compare") || "[]");
+let current = null;
+let selectedCategory = "همه";
+let selectedBrand = "همه";
+let filters = {cat:"همه",brand:"همه",min:0,max:150000000,rating:0,deal:"all"};
+
+function money(n){
+  return new Intl.NumberFormat("fa-IR").format(n) + " تومان";
+}
+function fa(n){return new Intl.NumberFormat("fa-IR").format(n)}
+function save(){
+  localStorage.setItem("nova_cart",JSON.stringify(cart));
+  localStorage.setItem("nova_wish",JSON.stringify(wish));
+  localStorage.setItem("nova_recent",JSON.stringify(recent));
+  localStorage.setItem("nova_compare",JSON.stringify(compare));
+}
+function getProduct(id){return products.find(p=>p.id===Number(id))}
+function firstImage(p){return image(p.images?.[0])}
+
+function card(p){
+  const isWish = wish.includes(p.id);
+  const isCompare = compare.includes(p.id);
+  return `
+  <article class="card">
+    <div class="pimg">
+      ${p.discount ? `<span class="tag">${fa(p.discount)}٪ تخفیف</span>` : ""}
+      <button class="heart ${isWish?"on":""}" data-wish="${p.id}">${isWish?"♥":"♡"}</button>
+      <img src="${firstImage(p)}" alt="${p.name}" loading="lazy" onerror="this.src=PLACEHOLDER">
+      <span class="stockTag">${p.stock>0?`موجودی: ${fa(p.stock)}`:"ناموجود"}</span>
+    </div>
+    <div class="info">
+      <div class="brand">${p.brand} · ${p.cat}</div>
+      <div class="name">${p.name}</div>
+      <div class="rating">★★★★★ <span>${p.rating}</span></div>
+      <div class="specs">${p.specs.map(s=>`<div class="spec">${s}</div>`).join("")}</div>
+      <div class="priceRow">
+        <div><div class="price">${money(p.price)}</div><div class="old">${money(p.old)}</div></div>
+        <button class="add" data-add="${p.id}">افزودن</button>
+      </div>
+      <button class="quickBtn" data-quick="${p.id}">👁 مشاهده جزئیات · ⚖ ${isCompare?"در مقایسه":"مقایسه"}</button>
+    </div>
+  </article>`;
+}
+
+function renderProducts(){
+  let list = products.filter(p=>{
+    const text = ($("#search").value||"").trim().toLowerCase();
+    const searchOK = !text || `${p.name} ${p.brand} ${p.cat} ${p.specs.join(" ")}`.toLowerCase().includes(text);
+    const catOK = selectedCategory==="همه" || p.cat===selectedCategory;
+    const brandOK = selectedBrand==="همه" || p.brand===selectedBrand;
+    const fCat = filters.cat==="همه" || p.cat===filters.cat;
+    const fBrand = filters.brand==="همه" || p.brand===filters.brand;
+    const priceOK = p.price>=filters.min && p.price<=filters.max;
+    const ratingOK = p.rating>=Number(filters.rating);
+    const dealOK = filters.deal==="all" || p.discount>0;
+    return searchOK && catOK && brandOK && fCat && fBrand && priceOK && ratingOK && dealOK;
+  });
+
+  switch($("#sort").value){
+    case "new": list.sort((a,b)=>(b.new?1:0)-(a.new?1:0));break;
+    case "best": list.sort((a,b)=>b.sales-a.sales);break;
+    case "cheap": list.sort((a,b)=>a.price-b.price);break;
+    case "expensive": list.sort((a,b)=>b.price-a.price);break;
+    case "discount": list.sort((a,b)=>b.discount-a.discount);break;
+    case "rating": list.sort((a,b)=>b.rating-a.rating);break;
+  }
+
+  $("#productGrid").innerHTML = list.length ? list.map(card).join("") :
+    `<div class="empty">😕 محصولی با این مشخصات پیدا نشد.<br><button class="outlineBtn" style="margin-top:12px" onclick="resetFilters()">حذف فیلترها</button></div>`;
+
+  $("#productTitle").textContent = selectedBrand!=="همه" ? `محصولات ${selectedBrand}` :
+    selectedCategory==="همه" ? "محصولات منتخب" : selectedCategory;
+  $("#productSubtitle").textContent = `${fa(list.length)} محصول پیدا شد`;
+  renderCompareBar();
+}
+
+function renderCart(){
+  const box=$("#cartList");
+  if(!cart.length){
+    box.innerHTML=`<div class="empty">🛒<br>سبد خریدت خالیه.</div>`;
+    $("#cartTotal").innerHTML="";
+    return;
+  }
+  box.innerHTML=cart.map(i=>{
+    const p=getProduct(i.id); if(!p)return "";
+    return `<div class="cartItem">
+      <img src="${firstImage(p)}" alt="">
+      <div class="grow"><b>${p.name}</b><div style="font-size:9px;color:var(--muted)">${money(p.price)}</div></div>
+      <div class="qty"><button data-minus="${p.id}">−</button><b>${fa(i.qty)}</b><button data-plus="${p.id}">+</button></div>
+      <button style="background:transparent;color:var(--accent);font-size:17px" data-remove="${p.id}">×</button>
+    </div>`;
+  }).join("");
+  const total=cart.reduce((s,i)=>{const p=getProduct(i.id);return s+(p?p.price*i.qty:0)},0);
+  const count=cart.reduce((s,i)=>s+i.qty,0);
+  const shipping=total>=30000000?0:250000;
+  $("#cartTotal").innerHTML=`<div><b>جمع: ${money(total)}</b><div style="font-size:9px;color:var(--muted)">ارسال: ${shipping?money(shipping):"رایگان"} · ${fa(count)} کالا</div></div><button class="cta" onclick="checkout()">ادامه پرداخت</button>`;
+}
+
+function renderWishlist(){
+  const list=products.filter(p=>wish.includes(p.id));
+  $("#wishGrid").innerHTML=list.length?list.map(card).join(""):`<div class="empty">❤️ هنوز محصولی به علاقه‌مندی‌ها اضافه نکردی.</div>`;
+}
+
+function renderRecent(){
+  const list=recent.map(getProduct).filter(Boolean);
+  $("#recentGrid").innerHTML=list.length?list.map(p=>`<div class="recentItem" data-quick="${p.id}"><img src="${firstImage(p)}"><div><b>${p.name}</b><small>${money(p.price)}</small></div></div>`).join(""):`<div class="empty">هنوز محصولی مشاهده نشده.</div>`;
+}
+
+function updateBadges(){
+  $("#cartCount").textContent=fa(cart.reduce((s,i)=>s+i.qty,0));
+  $("#wishCount").textContent=fa(wish.length);
+  $("#profileWish").textContent=fa(wish.length);
+  $("#profileCart").textContent=fa(cart.reduce((s,i)=>s+i.qty,0));
+}
+
+function addToCart(id){
+  const p=getProduct(id); if(!p)return;
+  const item=cart.find(i=>i.id===p.id);
+  if(item)item.qty++; else cart.push({id:p.id,qty:1});
+  save();updateBadges();showToast(`✓ ${p.name} به سبد اضافه شد`);
+}
+
+function toggleWish(id){
+  id=Number(id);
+  if(wish.includes(id)){wish=wish.filter(x=>x!==id);showToast("از علاقه‌مندی‌ها حذف شد")}
+  else{wish.push(id);showToast("❤️ به علاقه‌مندی‌ها اضافه شد")}
+  save();updateBadges();renderProducts();renderWishlist();
+}
+
+function toggleCompare(id){
+  id=Number(id);
+  if(compare.includes(id))compare=compare.filter(x=>x!==id);
+  else{
+    if(compare.length>=3){showToast("حداکثر ۳ محصول را می‌توانی مقایسه کنی.");return}
+    compare.push(id);
+  }
+  save();renderProducts();renderCompareBar();
+}
+
+function renderCompareBar(){
+  $("#compareCount").textContent=`${fa(compare.length)} محصول برای مقایسه`;
+  $("#compareBar").classList.toggle("show",compare.length>0);
+}
+
+function openQuick(id){
+  current=getProduct(id); if(!current)return;
+  if(!recent.includes(current.id)) recent.unshift(current.id);
+  recent=recent.slice(0,5);save();renderRecent();
+  $("#qBrand").textContent=`${current.brand} · ${current.cat}`;
+  $("#qName").textContent=current.name;
+  $("#qRating").textContent=current.rating;
+  $("#qDesc").textContent=current.desc;
+  $("#qPrice").textContent=money(current.price);
+  $("#qSpecs").innerHTML=current.specs.map(s=>`<div class="spec">${s}</div>`).join("");
+  $("#qColors").innerHTML=(current.colors||[]).map(c=>`<span class="colorDot" style="background:${c}"></span>`).join("");
+  $("#qThumbs").innerHTML=current.images.map((src,i)=>`<button class="thumb ${i===0?"active":""}" data-thumb="${i}"><img src="${image(src)}" alt=""></button>`).join("");
+  $("#qMainImg").src=firstImage(current);
+  openModal("quickModal");
+}
+
+function compareView(){
+  const list=compare.map(getProduct).filter(Boolean);
+  if(list.length<2){showToast("برای مقایسه حداقل ۲ محصول انتخاب کن.");return}
+  const rows=["برند","دسته‌بندی","امتیاز","قیمت","تخفیف","مشخصات"];
+  $("#compareContent").innerHTML=`<table class="compareTable">
+  <tr><th>ویژگی</th>${list.map(p=>`<th>${p.name}<br><img src="${firstImage(p)}"></th>`).join("")}</tr>
+  ${rows.map(r=>`<tr><td><b>${r}</b></td>${list.map(p=>{
+    if(r==="برند")return `<td>${p.brand}</td>`;
+    if(r==="دسته‌بندی")return `<td>${p.cat}</td>`;
+    if(r==="امتیاز")return `<td>⭐ ${p.rating}</td>`;
+    if(r==="قیمت")return `<td>${money(p.price)}</td>`;
+    if(r==="تخفیف")return `<td>${fa(p.discount)}٪</td>`;
+    return `<td>${p.specs.join(" · ")}</td>`;
+  }).join("")}</tr>`).join("")}</table>`;
+  openModal("compareModal");
+}
+
+function checkout(){
+  if(!cart.length){showToast("سبد خرید خالی است.");return}
+  $("#profileOrders").textContent=fa(1);
+  showToast("در نسخه واقعی، این مرحله به درگاه پرداخت وصل می‌شود.");
+  closeModal("cartModal");
+}
+
+function openModal(id){$("#"+id).classList.add("show");document.body.classList.add("no-scroll")}
+function closeModal(id){$("#"+id).classList.remove("show");document.body.classList.remove("no-scroll")}
+
+function showToast(text){
+  const t=$("#toast");t.textContent=text;t.classList.add("show");
+  clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),2300);
+}
+
+function resetFilters(){
+  filters={cat:"همه",brand:"همه",min:0,max:150000000,rating:0,deal:"all"};
+  $("#filterCat").value="همه";$("#filterBrand").value="همه";$("#minPrice").value=0;$("#maxPrice").value=150000000;$("#filterRating").value=0;$("#filterDeal").value="all";
+  selectedCategory="همه";selectedBrand="همه";renderProducts();closeModal("filterModal");
+}
+function applyFilters(){
+  filters={cat:$("#filterCat").value,brand:$("#filterBrand").value,min:Number($("#minPrice").value),max:Number($("#maxPrice").value),rating:Number($("#filterRating").value),deal:$("#filterDeal").value};
+  selectedCategory="همه";selectedBrand="همه";renderProducts();closeModal("filterModal");showToast("✓ فیلترها اعمال شدند");
+}
+function setDealFilter(){
+  filters.deal="yes";renderProducts();
+}
+
+function updatePriceTexts(){
+  $("#minPriceText").textContent=money(Number($("#minPrice").value));
+  $("#maxPriceText").textContent=money(Number($("#maxPrice").value));
+}
+
+function startCountdown(){
+  const end=new Date(Date.now()+1000*60*60*9+1000*60*37);
+  function tick(){
+    let d=Math.max(0,end-Date.now());
+    const h=Math.floor(d/3600000);d%=3600000;const m=Math.floor(d/60000);d%=60000;const s=Math.floor(d/1000);
+    $("#countdown").innerHTML=[["ساعت",h],["دقیقه",m],["ثانیه",s]].map(x=>`<div class="timeBox"><b>${fa(String(x[1]).padStart(2,"0"))}</b><small>${x[0]}</small></div>`).join("");
+  }
+  tick();setInterval(tick,1000);
+}
+
+function toggleTheme(){
+  document.body.classList.toggle("dark");
+  const dark=document.body.classList.contains("dark");
+  localStorage.setItem("nova_dark",dark?"1":"0");
+  $("#themeBtn").textContent=dark?"☀":"☾";
+}
+
+function init(){
+  if(localStorage.getItem("nova_dark")==="1"){document.body.classList.add("dark");$("#themeBtn").textContent="☀"}
+  // تصویر Hero را هم می‌توانی با images/hero-loq.jpg عوض کنی.
+  $("#heroImage").src=image("images/hero-loq.jpg");
+
+  renderProducts();renderCart();renderWishlist();renderRecent();updateBadges();startCountdown();updatePriceTexts();
+
+  document.addEventListener("click",e=>{
+    const add=e.target.closest("[data-add]"); if(add){addToCart(add.dataset.add);return}
+    const wishBtn=e.target.closest("[data-wish]"); if(wishBtn){toggleWish(wishBtn.dataset.wish);return}
+    const quick=e.target.closest("[data-quick]"); if(quick){openQuick(quick.dataset.quick);return}
+    const plus=e.target.closest("[data-plus]"); if(plus){const i=cart.find(x=>x.id==plus.dataset.plus);if(i)i.qty++;save();renderCart();updateBadges();return}
+    const minus=e.target.closest("[data-minus]"); if(minus){const i=cart.find(x=>x.id==minus.dataset.minus);if(i){i.qty--;if(i.qty<=0)cart=cart.filter(x=>x.id!=i.id)}save();renderCart();updateBadges();return}
+    const rem=e.target.closest("[data-remove]"); if(rem){cart=cart.filter(x=>x.id!=rem.dataset.remove);save();renderCart();updateBadges();return}
+    const thumb=e.target.closest("[data-thumb]"); if(thumb && current){const idx=Number(thumb.dataset.thumb);$("#qMainImg").src=image(current.images[idx]);$$(".thumb").forEach(x=>x.classList.remove("active"));thumb.classList.add("active");return}
+    const brand=e.target.closest("[data-brand]"); if(brand){selectedBrand=brand.dataset.brand;selectedCategory="همه";renderProducts();document.querySelector("#products").scrollIntoView({behavior:"smooth"});return}
+  });
+
+  $("#themeBtn").onclick=toggleTheme;
+  $("#cartBtn").onclick=()=>{openModal("cartModal");renderCart()};
+  $("#wishBtn").onclick=()=>{openModal("wishModal");renderWishlist()};
+  $("#loginBtn").onclick=()=>openModal("profileModal");
+  $("#filterBtn").onclick=()=>openModal("filterModal");
+  $("#sort").onchange=renderProducts;
+  $("#compareBtn").onclick=compareView;
+  $("#clearCompare").onclick=()=>{compare=[];save();renderProducts()};
+  $("#qAdd").onclick=()=>current&&addToCart(current.id);
+  $("#qCompare").onclick=()=>current&&toggleCompare(current.id);
+
+  $("#search").addEventListener("input",()=>{
+    renderProducts();
+    const text=$("#search").value.trim().toLowerCase();
+    if(!text){$("#searchSuggestions").classList.remove("show");return}
+    const hits=products.filter(p=>`${p.name} ${p.brand} ${p.cat}`.toLowerCase().includes(text)).slice(0,5);
+    $("#searchSuggestions").innerHTML=hits.length?hits.map(p=>`<div class="suggestion" data-quick="${p.id}"><img src="${firstImage(p)}"><div><b>${p.name}</b><small>${p.brand} · ${money(p.price)}</small></div></div>`).join(""):`<div style="padding:15px;color:var(--muted);font-size:10px">نتیجه‌ای پیدا نشد.</div>`;
+    $("#searchSuggestions").classList.add("show");
+  });
+  document.addEventListener("click",e=>{if(!e.target.closest(".search"))$("#searchSuggestions").classList.remove("show")});
+
+  $$(".catbar a[data-cat]").forEach(a=>a.onclick=e=>{
+    e.preventDefault();selectedCategory=a.dataset.cat;selectedBrand="همه";filters.cat="همه";renderProducts();$("#products").scrollIntoView({behavior:"smooth"});
+    $$(".catbar a").forEach(x=>x.classList.remove("active"));a.classList.add("active");
+  });
+
+  ["minPrice","maxPrice"].forEach(id=>$("#"+id).addEventListener("input",updatePriceTexts));
+
+  $("#quickModal").addEventListener("click",e=>{if(e.target.id==="quickModal")closeModal("quickModal")});
+  $("#cartModal").addEventListener("click",e=>{if(e.target.id==="cartModal")closeModal("cartModal")});
+  $("#filterModal").addEventListener("click",e=>{if(e.target.id==="filterModal")closeModal("filterModal")});
+  $("#compareModal").addEventListener("click",e=>{if(e.target.id==="compareModal")closeModal("compareModal")});
+  $("#wishModal").addEventListener("click",e=>{if(e.target.id==="wishModal")closeModal("wishModal")});
+  $("#profileModal").addEventListener("click",e=>{if(e.target.id==="profileModal")closeModal("profileModal")});
+
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")$$(".modalBg.show").forEach(x=>x.classList.remove("show"));document.body.classList.remove("no-scroll")});
+}
+init();
+</script>
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/NOVA-X-index.html")
+path.write_text(html, encoding="utf-8")
+print(f"فایل ساخته شد: {path}")
+print(f"تعداد کاراکتر: {len(html):,}")
+print("نسخه شامل: جستجو، پیشنهاد لحظه‌ای، فیلتر، مرتب‌سازی، سبد خرید، علاقه‌مندی، گالری، مقایسه، اخیراً دیده‌شده، دارک‌مود، Countdown، پروفایل، ریسپانسیو و ساختار آماده برای Python/Database.")
